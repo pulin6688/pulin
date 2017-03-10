@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx 
+	    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+
+
+    <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" lazy-init="true">
+        <property name="brokerURL" value="tcp://192.168.1.38:61616" />
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" >
+        <property name="targetConnectionFactory" ref="amqConnectionFactory"/>
+        <property name="sessionCacheSize" value="50"/>
+    </bean>
+
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="sessionTransacted" value="true" />
+        <property name="deliveryPersistent" value="true" />
+    </bean>
+
+
+
+    
+     <bean id="testTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="VirtualTopic.testTopic" />
+     </bean>
+     
+
+    
+  <!--   <bean id="testQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="testQueue" />
+    </bean> -->
+    
+    <bean id="jmsListener"  class="com.pulin.jms.JMSListener" />
+    
+    
+    
+    <bean id="testTopicQueue1" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="Consumer.test1.VirtualTopic.testTopic" />
+    </bean>
+    <bean id="defaultMessageListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="testTopicQueue1" />
+        <property name="messageListener" ref="jmsListener" />
+        <property name="messageSelector" value="JMSXGroupID='A[0-9]'" />
+        <property name="sessionTransacted" value="true" />
+        <property name="pubSubDomain" value="true" />
+        <property name="concurrency" value="1-150" />
+    </bean>
+
+   <!--  <import resource="jms_container.xml" /> -->
+
+  
+</beans>
