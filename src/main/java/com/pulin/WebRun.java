@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.solr.SolrAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
@@ -25,16 +27,18 @@ import com.pulin.jms.JMSListener;
 //@EnableAutoConfiguration//启用自动配置
 //@EnableDiscoveryClient
 //@EnableEurekaClient
+//@ImportResource(value = {"classpath:jms.xml"}) // 导入配置文件
+@ComponentScan("com.pulin")//组件扫描
+@SpringBootApplication//配置控制
 @EnableAutoConfiguration(exclude = {
 		DataSourceAutoConfiguration.class
 		,MongoAutoConfiguration.class
         ,SolrAutoConfiguration.class, 
         //,FeignClientConfiguration.class
         })
-@ComponentScan("com.pulin")//组件扫描
-@SpringBootApplication//配置控制
-@ImportResource(value = {"classpath:jms.xml"}) // 导入配置文件
 public class WebRun {
+
+    final static Logger logger = LoggerFactory.getLogger(WebRun.class);
 
     public static void main(String[] args) {
         SpringApplication.run(WebRun.class, args);
@@ -42,12 +46,26 @@ public class WebRun {
 
 
 
+    @Bean
+    public FormHttpMessageConverter addHttpMessageConverter(){
+        //WebMvcConfigurationSupport
+        FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
+        return formHttpMessageConverter;
+    }
+
+    @Bean
+    public GsonHttpMessageConverter addGsonHttpMessageConverter(){
+        //WebMvcConfigurationSupport
+        GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
+        return gsonHttpMessageConverter;
+    }
 
 
 
 
 
-    final static Logger logger = LoggerFactory.getLogger(WebRun.class);
+
+/*
     @Autowired
     private JMSListener jmsListener;
     @Autowired
@@ -70,5 +88,8 @@ public class WebRun {
             list.add(c);
         }
          return list;
-    }
+    }*/
+
+
+
 }
