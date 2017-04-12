@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.solr.SolrAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 
@@ -18,6 +19,7 @@ import org.springframework.http.converter.json.GsonHttpMessageConverter;
 //@EnableDiscoveryClient
 //@EnableEurekaClient
 //@ImportResource(value = {"classpath:jms.xml"}) // 导入配置文件
+@ImportResource(value = {"classpath:application-boot.xml"})
 @ComponentScan("com.pulin")//组件扫描
 @SpringBootApplication//配置控制
 @EnableAutoConfiguration(exclude = {
