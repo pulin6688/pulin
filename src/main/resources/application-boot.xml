@@ -38,9 +38,16 @@
 		<property name="testWhileIdle" value="true" />
 	</bean>
 
-	<bean id="jedisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
+	<bean id="jedisPool_DEV" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
 		<constructor-arg index="0" ref="jedisPoolConfig"/>
-		<constructor-arg index="1" value="redis://d64ffed6b62e4e7c:CcPEtGSkIXSESQ6R@dev.redis.cnhz.shishike.com:6379/3" type="java.net.URI"/>
+		<constructor-arg index="1" value="redis://d64ffed6b62e4e7c:CcPEtGSkIXSESQ6R@dev.redis.cnhz.shishike.com:6379/3" type="java.net.URI" />
+		<constructor-arg index="2" value="1000"/>
+	</bean>
+	
+	
+	<bean id="jedisPool_TEST" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
+		<constructor-arg index="0" ref="jedisPoolConfig"/>
+		<constructor-arg index="1" value="redis://d64ffed6b62e4e7c:CcPEtGSkIXSESQ6R@d64ffed6b62e4e7c.m.cnhza.kvstore.aliyuncs.com:6379/3" type="java.net.URI"/>
 		<constructor-arg index="2" value="1000"/>
 	</bean>
 

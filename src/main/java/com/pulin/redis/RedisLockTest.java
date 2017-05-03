@@ -15,7 +15,8 @@ public class RedisLockTest {
 	
 	public static void exec() {
 
-		JedisPool pool = null;
+		JedisPool pool = new JedisPool();
+		
     	Jedis jedis = pool.getResource();
 		
 		RedisLock lock = new RedisLock(jedis);

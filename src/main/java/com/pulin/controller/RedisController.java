@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,10 +26,46 @@ public class RedisController {
 	static Logger logger = LoggerFactory.getLogger(RedisController.class);
 	
 	@Autowired
-	private JedisPool jedisPool;
+	@Qualifier("jedisPool_DEV")
+	private JedisPool jedisPool_DEV;
+	
+	@Autowired
+	@Qualifier("jedisPool_TEST")
+	private JedisPool jedisPool_TEST;
+	
+	
+	 @RequestMapping(value="/get")
+	  @ResponseBody
+	    public String get22() {
+		 Jedis jedis = jedisPool_DEV.getResource();
+		 String v = jedis.get("gateway:crm:yazuo:token:key:test:247900001");
+		 logger.info("v_dev:{}",v);
+		 jedisPool_DEV.returnBrokenResource(jedis);
+		 
+		  jedis = jedisPool_TEST.getResource();
+		  v = jedis.get("gateway:crm:yazuo:token:key:test:247900001");
+		 logger.info("v_test:{}",v);
+		 jedisPool_TEST.returnBrokenResource(jedis);
+		 return "success";
+	    }
+	 
+	 
+	 @RequestMapping(value="/set")
+	  @ResponseBody
+	    public String set() {
+		 Jedis jedis = jedisPool_DEV.getResource();
+		 String v = jedis.get("gateway:crm:yazuo:token:key:test:247900001");
+		 logger.info("v_dev:{}",v);
+		 jedisPool_DEV.returnBrokenResource(jedis);
+		 
+		  jedis = jedisPool_TEST.getResource();
+		  jedis.setex("gateway:crm:yazuo:token:key:test:247900001", 1000, v);
+		 jedisPool_TEST.returnBrokenResource(jedis);
+		 return "success";
+	    }
 	
     
-    @RequestMapping(value="/get")
+    @RequestMapping(value="/getaaaaaaaaaaaaaa")
     @ResponseBody
     public String get() {
         return exec();
@@ -38,7 +75,7 @@ public class RedisController {
     SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 	private  String exec() {
 		String r_token = null;
-		Jedis jedis = jedisPool.getResource();
+		Jedis jedis = jedisPool_TEST.getResource();
 		RedisLock lock = new RedisLock(jedis);
 		//RedisLock2 lock = new RedisLock2(jedis);
 		try {
@@ -76,7 +113,7 @@ public class RedisController {
 			e.printStackTrace();
 		} finally {
 			
-			jedisPool.returnResource(jedis);
+			jedisPool_TEST.returnResource(jedis);
 		}
 		return r_token;
 	}
