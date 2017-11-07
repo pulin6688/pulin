@@ -1,10 +1,7 @@
-package com.pulin.controller;
+package com.pulin.controller.test;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.alibaba.fastjson.JSON;
+import com.pulin.controller.BaiduTakeoutRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
 //import org.apache.log4j.spi.LoggerFactory;
-import com.alibaba.fastjson.JSON;
 
 
 @Controller
@@ -28,9 +28,10 @@ public class TestController {
     @RequestMapping(value="/a")
     @ResponseBody
     public String a() {
-        return "ok_a";
+        return "ok_a||";
     }
-    
+
+
     @RequestMapping(value="/a/b")
     @ResponseBody
     public String b() {

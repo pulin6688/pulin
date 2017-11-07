@@ -8,11 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.solr.SolrAutoConfiguration;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 //@EnableAutoConfiguration//启用自动配置
@@ -22,6 +25,8 @@ import org.springframework.http.converter.json.GsonHttpMessageConverter;
 @ImportResource(value = {"classpath:application-boot.xml"})
 @ComponentScan("com.pulin")//组件扫描
 @SpringBootApplication//配置控制
+@EnableAsync(proxyTargetClass = false,mode= AdviceMode.ASPECTJ)
+@EnableScheduling
 @EnableAutoConfiguration(exclude = {
 		DataSourceAutoConfiguration.class
 		,MongoAutoConfiguration.class

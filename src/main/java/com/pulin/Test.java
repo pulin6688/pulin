@@ -1,7 +1,9 @@
 package com.pulin;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -11,6 +13,10 @@ import com.google.gson.Gson;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
+
+		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(1509109390*1000L)));
+
+
 		List<String> list = FileUtils.readLines(new File("d://bbb.txt"));
 		List<AA> list2 = new ArrayList<AA>();
 		for(String s:list){
