@@ -1,5 +1,0 @@
-$name  
-$hobby:  
-#foreach($hobby in $hobbyArray)  
-    ${hobby}  
-#end
