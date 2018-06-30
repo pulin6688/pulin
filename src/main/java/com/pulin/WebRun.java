@@ -9,6 +9,7 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -34,9 +35,10 @@ import org.springframework.web.client.RestTemplate;
 @EnableTransactionManagement
 @EnableScheduling
 @EnableAspectJAutoProxy(proxyTargetClass=true,exposeProxy = true)
-@EnableCircuitBreaker
 @RibbonClient(value="IDSERVER")
 @EnableCaching
+@EnableCircuitBreaker
+@EnableHystrixDashboard
 public class WebRun {
 
     final static Logger logger = LoggerFactory.getLogger(WebRun.class);
@@ -51,5 +53,6 @@ public class WebRun {
     RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
 
 }
